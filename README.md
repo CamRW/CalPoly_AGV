@@ -62,7 +62,7 @@ Due to limitations in Nvidia's L4T OS, it's necessary to use a docker image to t
 ## Teleop_twist_joy
 This package allows control of the vehicle via keyboard or controller commands, changes are necessary to the configuration files for certain controller set ups. These changes need to match the velocity command topics that are subscribed to by the controller/twist_mux.
 
-# Custom ROS Nodes
+# Custom ROS Packages
 Many features for this lab are required to be implemented from scratch due to the uniqueness of our system. This section will outline the custom nodes developed, and a brief introduction to their functionality.
 
 ## agv_bot_description

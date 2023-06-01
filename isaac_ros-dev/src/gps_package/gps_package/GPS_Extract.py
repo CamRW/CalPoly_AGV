@@ -13,7 +13,7 @@ def extract_fields(taip_pv):
         print("BAD MSG")
         return fields
 
-    print("Full msg:",msg[1])
+    #print("Full msg:",msg[1])
     # Pack msg into list for parsing
     msg = list(msg[1])
 
@@ -44,6 +44,8 @@ def extract_fields(taip_pv):
 
 # Convert TAIP-PV latitude and longitude
 # messages to decimal format
+## TODO: Confirm that the GPS coordinates have the appropriate decimal place
+# Previous implementation was off by a factor of 100
 def convert_to_decimal(data, msg_type=""):
     if msg_type == "longitude":
         if data[0] == '+':
