@@ -14,6 +14,9 @@ This project utilizes a base docker image created through Nvidia's Isaac ROS pac
 # VPN Setup
 This project uses the Husarnet VPN as it is a simple to use VPN specifically designed to work with ROS. Follow the documentation to set up networks and clients on Husarnet's website (see https://husarnet.com/ and https://github.com/husarnet/husarnet). Additionally, a tool provided by Husarnet, called husarnet-dds (see https://github.com/husarnet/husarnet-dds), can be used to automatically create the middleware profile necessary for ROS to communicate outside of the local network.
 
+# Racing Simulator Chair Setup
+One unique aspect of this lab is the integration of our system with a racing simulator chair. From the racing simulator, we can remotely control the vehicle, and with IMUs on the vehicle, we can send feedback to the chair to convey what a driver would experience. ROS nodes were developed for the chair to communicate with the vehicle remotely. Currently, the implementation of the haptic feedback (i.e. the chair shaking when the vehicle hits a bump) module is not ROS compatible. The haptic feedback module uses a simple websocket developed before ROS became the standard architecture. Future work should focus on integrating the haptic feedback module into the rest of the system. 
+
 # Working with Submodules
 Third-party packages are added as git submodules, some packages require minor changes to configurations to operate within the system. Future versions could incorporate these changes with forked versions of the submodules used. Each change required will be outlined.
 
@@ -56,5 +59,23 @@ This package creates the functionality to add Intel Realsense devices to the ROS
 ## Isaac_ros_common
 Due to limitations in Nvidia's L4T OS, it's necessary to use a docker image to take advantage of many packages built for ROS. The isaac_ros_common package contains several dockerfiles and build scripts for building the base image used in this project. Middleware profiles are defined for communicating remotely with other devices within the VPN, as well as a custom dockerfile is created to add dependencies for libraries used throughout the system.
 
+## Teleop_twist_joy
+This package allows control of the vehicle via keyboard or controller commands, changes are necessary to the configuration files for certain controller set ups. These changes need to match the velocity command topics that are subscribed to by the controller/twist_mux.
 
+# Custom ROS Nodes
+Many features for this lab are required to be implemented from scratch due to the uniqueness of our system. This section will outline the custom nodes developed, and a brief introduction to their functionality.
 
+## agv_bot_description
+This package is an ongoing effort in creating an accurate URDF model of the vehicle in order to properly simulate and visualize the vehicle in software such as RVIZ and Gazebo. Additionally, this package provides the transformations from sensor frames to the base frame of the vehicle which are necessary for tasks like SLAM.
+
+## gps_package
+This package communicates with the on-board Sierra Wireless Airlink MP70 (https://www.sierrawireless.com/router-solutions/mp70/) wireless modem to aquire GPS data. The node opens a serial port to the modem and receives telemetry data in the TAIP protocol format. This data is parsed and then published on a NavSatFix topic. Frequency of the messages can be changed within the modem's configuration page.
+
+## lin_det_package
+Currently in development, the final version of this package aims to provide some basic autonomy via line following.
+
+## realsense_obj_det
+This package uses the on-board realsense camera and the topics published from the realsense-ros nodes to detect objects close to the vehicle. By utilizing the depth sensor on the realsense camera, objects of a certain size within a "close" distance to the camera will change the value of the topic published from this node. The controller node is subscribed to this topic and will stop the drive motors when conditions are met.
+
+## simulator_control
+This is the current implementation of steering and velocity control. This node subscribes to twist messages and uses the x.linear field for linear acceleration and the z.angular field for steering angle. Two microcontrollers are used for the low-level motor control. This node opens up serial ports to these microcontrollers and send the appropriate message based on the twist messages.
