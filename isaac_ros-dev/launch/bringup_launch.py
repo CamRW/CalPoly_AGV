@@ -6,6 +6,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, TextSubstitution
 
 
+# Launch file for starting all nodes
+# TODO: Investigate node compositors and more efficient ways of bringing the system up
+
 def generate_launch_description():
 
     teleop_twist_keyboard_node = Node(
