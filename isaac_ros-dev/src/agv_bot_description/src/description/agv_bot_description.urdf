@@ -16,7 +16,7 @@
     <!-- Robot Base -->
   <link name="base_link">
     <visual>
-      <origin xyz="-.946 -.521 -.313" rpy="0 0 0" />
+      <origin xyz=".946 .521 -.313" rpy="0 0 ${pi}" />
       <geometry>
         <!-- <box size="${base_length} ${base_width} ${base_height-.2}"/> -->
         <mesh filename="package://agv_bot_description/meshes/agv_chassis.stl"/>
@@ -36,7 +36,7 @@
     <origin xyz="0.0 0.0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
   </joint>
 
-    <!-- Wheels -->
+  <!-- Wheels -->
   <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
     <link name="${prefix}_link">
       <visual>
@@ -58,10 +58,41 @@
     </joint>
   </xacro:macro>
 
-  <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
-  <xacro:wheel prefix="drivewhl_l2" x_reflect="1" y_reflect="-1" />
-  <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
-  <xacro:wheel prefix="drivewhl_r2" x_reflect="1" y_reflect="1" />
+  <!-- Steering Wheels -->
+  <xacro:macro name="steeringwheels" params="prefix x_reflect y_reflect">
+    <link name="${prefix}_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="Gray">
+          <color rgba="0.5 0.5 0.5 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="${prefix}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <joint name="${prefix}_joint_steering" type="revolute">
+      <parent link="base_link"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" lower="-0.698" upper="0.698" velocity="0.5"/>
+    </joint>
+  </xacro:macro>
+
+
+  <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="1" />
+  <xacro:steeringwheels prefix="drivewhl_steering_r" x_reflect="1" y_reflect="-1" />
+  <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="-1" />
+  <xacro:steeringwheels prefix="drivewhl_steering_l" x_reflect="1" y_reflect="1" />
 
   <!-- Lidar -->
   <link name="lidar">

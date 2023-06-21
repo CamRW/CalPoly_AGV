@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, TextSubstitution
+import os
 
 
 # Launch file for starting all nodes
@@ -39,6 +40,14 @@ def generate_launch_description():
         package='web_video_server',
         namespace='web_video_server',
         executable='web_video_server'
+    )
+
+    right_fisheye_node = Node(
+        package='usb_cam', executable='usb_cam_node_exe',
+        name='right_fisheye',
+        namespace='right_fisheye_camera',
+        parameters=[os.path.join('/workspaces','isaac_ros-dev','configs',
+                                'camera_configs','right_fisheye','right_fisheye_params.yaml')]
     )
     return LaunchDescription([
         IncludeLaunchDescription(
@@ -76,5 +85,6 @@ def generate_launch_description():
         gps_node,
         simulator_control_node,
         realsense_obj_det_node,
-        web_video_server_node
+        web_video_server_node,
+        right_fisheye_node
     ])

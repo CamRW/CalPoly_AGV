@@ -40,6 +40,9 @@ The submodules used in this project are listed below, if a specific branch is re
 - teleop_twist_joy
 	- https://github.com/ros2/teleop_twist_joy
 	- branch: humble
+- usb_cam
+	- https://github.com/ros-drivers/usb_cam
+	- branch: ros2
 
 ## Velodyne
 This package serves as the driver for accessing the Velodyne VLP16 puck lidar used on this vehicle. It publishes several ROS2 topics used for point cloud processing. The package assumes the default network address for the lidar is used. If there is a desire to change that address, the change must be reflected in this package.
@@ -61,6 +64,9 @@ Due to limitations in Nvidia's L4T OS, it's necessary to use a docker image to t
 
 ## Teleop_twist_joy
 This package allows control of the vehicle via keyboard or controller commands, changes are necessary to the configuration files for certain controller set ups. These changes need to match the velocity command topics that are subscribed to by the controller/twist_mux.
+
+## Usb_cam
+This package is used for setting up ROS2 nodes to publish raw and compressed image topics for each monocular rgb camera. Custom udev rules were written to maintain consistent /dev entries for each camera
 
 # Custom ROS Packages
 Many features for this lab are required to be implemented from scratch due to the uniqueness of our system. This section will outline the custom nodes developed, and a brief introduction to their functionality.
