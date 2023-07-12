@@ -42,13 +42,35 @@ def generate_launch_description():
         executable='web_video_server'
     )
 
-    right_fisheye_node = Node(
-        package='usb_cam', executable='usb_cam_node_exe',
-        name='right_fisheye',
-        namespace='right_fisheye_camera',
-        parameters=[os.path.join('/workspaces','isaac_ros-dev','configs',
-                                'camera_configs','right_fisheye','right_fisheye_params.yaml')]
+    image_stitcher_node = Node(
+        package='image_stitcher',
+        namespace='stiched_images',
+        executable='image_stitcher_node'
     )
+
+    # right_fisheye_node = Node(
+    #     package='usb_cam', executable='usb_cam_node_exe',
+    #     name='right_fisheye',
+    #     namespace='right_fisheye_camera',
+    #     parameters=[os.path.join('/workspaces','isaac_ros-dev','configs',
+    #                             'camera_configs','right_fisheye','right_fisheye_params.yaml')]
+    # )
+
+    # right_boxcam_node = Node(
+    #     package='usb_cam', executable='usb_cam_node_exe',
+    #     name='right_boxcam',
+    #     namespace='right_boxcam_camera',
+    #     parameters=[os.path.join('/workspaces','isaac_ros-dev','configs',
+    #                             'camera_configs','right_boxcam','right_boxcam_params.yaml')]
+    # )
+
+    # left_boxcam_node = Node(
+    #     package='usb_cam', executable='usb_cam_node_exe',
+    #     name='left_boxcam',
+    #     namespace='left_boxcam_camera',
+    #     parameters=[os.path.join('/workspaces','isaac_ros-dev','configs',
+    #                             'camera_configs','left_boxcam','left_boxcam_params.yaml')]
+    # )
     return LaunchDescription([
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
@@ -74,17 +96,22 @@ def generate_launch_description():
                 ])
             ])
         ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('image_publisher'),
-                    'launch/image_publisher_mono.launch.py'
-                ])
-            ])
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         PathJoinSubstitution([
+        #             FindPackageShare('image_publisher'),
+        #             'launch/image_publisher_mono.launch.py'
+        #         ])
+        #     ])
+        # ),
+        # right_fisheye_node,
         gps_node,
         simulator_control_node,
         realsense_obj_det_node,
         web_video_server_node,
-        right_fisheye_node
+        image_stitcher_node
+        # left_boxcam_node,
+        # right_boxcam_node
+        
+        
     ])

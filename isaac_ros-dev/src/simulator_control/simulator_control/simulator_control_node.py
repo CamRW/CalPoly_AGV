@@ -14,16 +14,16 @@ class SimulatorSubscriber(Node):
         # Create twist message subscriber
         self.controller_subscription = self.create_subscription(
             Twist,
-            'vrx_vel',
+            '/twist_mux/cmd_vel',
             self.controller_callback,
-            10)
+            1)
         
         # Create timer and register callback to stop the vehicle if it doesn't receive a message in .5 seconds
         timer_period = 0.5 # Seconds
         self.timer = self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Create object detection subscriber, object detection is done in the realsense_obj_det package
-        self.obj_dec_subscription = self.create_subscription(Int16, 'object_det', self.obj_det_callback, 10)
+        self.obj_dec_subscription = self.create_subscription(Int16, '/realsense_obj_det/object_det', self.obj_det_callback, 2)
 
         self.controller_subscription  # prevent unused variable warning
         self.obj_dec_subscription
@@ -75,6 +75,7 @@ class SimulatorSubscriber(Node):
         # print("Steering Angle: ", steering_angle, type(steering_angle))
 
         # All velocity commands should first check if there is an object before sending the command to the microcontrollers
+        self.obj_det = 0
         if self.obj_det == 0:
             #print("OBJ DET: 0")
             self.steeringSerial.write((str(steering_angle)+'\n').encode())

@@ -25,9 +25,11 @@ class RealsenseObjDet(Node):
         depth_idxs = np.argwhere((self.depth_array[100:-100] < 1500) & (self.depth_array[100:-100] > 0))
         if depth_idxs.size > 0:
             if depth_idxs.shape[0] > 2500:
-                print("Object Detected")
+                #print("Object Detected")
                 msg.data = 1
             else:
+                msg.data = 0
+        else:
                 msg.data = 0
         self.publisher_.publish(msg)
 
