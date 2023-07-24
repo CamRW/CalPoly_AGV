@@ -22,7 +22,7 @@ class GPSNode(Node):
         
         # Open serial port to modem
         try:
-            self.gps_serial = serial.Serial('/dev/ttyACM1', 115200)
+            self.gps_serial = serial.Serial('/dev/ttyACM0', 115200)
         except:
             print("Serial could not connect")
 
@@ -34,6 +34,7 @@ class GPSNode(Node):
 
         # Extract gps data into its relative fields
         data = GPS_Extract.extract_fields(raw_taip)
+        print(data)
 
         if len(data)>0:
 
@@ -45,6 +46,7 @@ class GPSNode(Node):
             # values, but they are not used in this implementation
             speed = float(data[2])
             heading = float(data[3])
+            print(heading)
 
             # Create message objects and give them frame ids
             coords_msg = NavSatFix()
@@ -57,8 +59,8 @@ class GPSNode(Node):
             #twist_msg.header.stamp = coords_msg.header.stamp
 
             # Fill message fields
-            coords_msg.latitude = coords[0]
-            coords_msg.longitude = coords[1]
+            coords_msg.latitude = coords[0]/1000.0
+            coords_msg.longitude = coords[1]/1000.0
 
             #twist_msg.twist._twist._linear.x = speed
             #twist_msg.twist._twist._angular.z = 0.0
