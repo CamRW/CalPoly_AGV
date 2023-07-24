@@ -1,0 +1,24 @@
+# Dockerfile extending Nvidia's Isaac ROS docker images for use with Cal Poly Pomona's Autonomous Vehicles Lab
+
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# Disable terminal interaction for apt
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SHELL /bin/bash
+SHELL ["/bin/bash", "-c"]
+
+# Install Pyserial, Pyfirmata
+RUN python3 -m pip install -U \
+    pyserial \
+    pyfirmata
+
+# Install Pyserial, Pyfirmata
+RUN python3 -m pip install -U \
+    pyOpenSSL \
+    aiohttp \
+    aiortc
+
+RUN apt-get install -y \
+    net-tools
+

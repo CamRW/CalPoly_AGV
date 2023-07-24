@@ -1,0 +1,22 @@
+# Camera matrix, and distortion coefficients for
+# Arducam 170 degree fisheye, retification and projection are unused and not correct vals
+image_width: 640
+image_height: 480
+camera_name: right_fisheye
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [323.41633, 0.000000, 324.50881, 0.000000, 323.41633, 246.50236, 0.000000, 0.000000, 1.000000]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.02782, 0.02124, -0.04719, 0.029, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] # CURRENTLY UNUSED
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [0, 0.000000, 0, 0.000000, 0.000000, 0, 0, 0.000000, 0.000000, 0.000000, 0, 0.000000] # CURRENTLY UNUSED

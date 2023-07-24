@@ -3,6 +3,8 @@ isaac_ros-dev/install/
 isaac_ros-dev/log/
 isaac_ros-dev/bags/
 isaac_ros-dev/launch/__pycache__/
+isaac_ros-dev/src/isaac_ros_common/docker/middleware_profiles/
+
 
 *.pyc
 .vscode
