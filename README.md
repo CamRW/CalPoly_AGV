@@ -11,17 +11,46 @@ The code developed in this repository is set up to run on an Nvidia AGX Orin sin
 
 This project utilizes a base docker image created through Nvidia's Isaac ROS packages. Setting up this image properly is critical to having a functional system. Follow Nvidia's documentation at https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common and https://github.com/NVIDIA-ISAAC-ROS
 
+## Project Structure
+The bulk of the project is laid out in standard ROS2 folder structures, the workspace directory isaac_ros-dev stores the source code for the ROS nodes in its src directory. A root level launch folder is used for storing a vehicle bringup launch file. A configs folder is used for storing camera configs that may be used across different nodes. Also within the root of the workspace, a utils folder is used for utility scripts such as updating camera device numbers for multiple identical cameras. A high level overview of the project structure is listed below.
+
+```
+isaac_ros-dev
+.
+├── configs
+│   └── camera_configs
+├── launch
+│   └── bringup_launch.py
+├── src
+│   ├── agv_bot_description
+│   ├── async_web_server_cpp
+│   ├── gps_package
+│   ├── image_stitcher
+│   ├── isaac_ros_common
+│   ├── isaac_ros_nvblox
+│   ├── lin_det_pkg
+│   ├── realsense_obj_det
+│   ├── realsense-ros
+│   ├── simulator_control
+│   ├── teleop_twist_joy
+│   ├── teleop_twist_keyboard
+│   ├── twist_mux
+│   ├── velodyne
+│   └── web_video_server
+└── utils
+```
+
 # VPN Setup
 This project uses the Husarnet VPN as it is a simple to use VPN specifically designed to work with ROS. Follow the documentation to set up networks and clients on Husarnet's website (see https://husarnet.com/ and https://github.com/husarnet/husarnet). Additionally, a tool provided by Husarnet, called husarnet-dds (see https://github.com/husarnet/husarnet-dds), can be used to automatically create the middleware profile necessary for ROS to communicate outside of the local network.
 
 # Racing Simulator Chair Setup
-One unique aspect of this lab is the integration of our system with a racing simulator chair. From the racing simulator, we can remotely control the vehicle, and with IMUs on the vehicle, we can send feedback to the chair to convey what a driver would experience. ROS nodes were developed for the chair to communicate with the vehicle remotely. Currently, the implementation of the haptic feedback (i.e. the chair shaking when the vehicle hits a bump) module is not ROS compatible. The haptic feedback module uses a simple websocket developed before ROS became the standard architecture. Future work should focus on integrating the haptic feedback module into the rest of the system. 
+One unique aspect of this lab is the integration of our system with a racing simulator chair. From the racing simulator, we can remotely control the vehicle, and with IMUs on the vehicle, we can send feedback to the chair to convey what a driver would experience. ROS nodes were developed for the chair to communicate with the vehicle remotely.
 
-# Working with Submodules
-Third-party packages are added as git submodules, some packages require minor changes to configurations to operate within the system. Future versions could incorporate these changes with forked versions of the submodules used. Each change required will be outlined.
+# Working with 3rd Party Libraries
+Third-party packages are cloned and modified to fit our needs, some packages require minor changes to configurations to operate within the system. Each change required will be outlined.
 
-## Current List of Submodules
-The submodules used in this project are listed below, if a specific branch is required, it will be listed. Otherwise assume the default branch is used.
+## Current List of 3rd Party Libraries
+The 3rd party libraries used in this project are listed below, if a specific branch is required, it will be listed. Otherwise assume the default branch is used.
 
 - velodyne
 	- https://github.com/ros-drivers/velodyne
@@ -40,9 +69,6 @@ The submodules used in this project are listed below, if a specific branch is re
 - teleop_twist_joy
 	- https://github.com/ros2/teleop_twist_joy
 	- branch: humble
-- usb_cam
-	- https://github.com/ros-drivers/usb_cam
-	- branch: ros2
 
 ## Velodyne
 This package serves as the driver for accessing the Velodyne VLP16 puck lidar used on this vehicle. It publishes several ROS2 topics used for point cloud processing. The package assumes the default network address for the lidar is used. If there is a desire to change that address, the change must be reflected in this package.
@@ -64,9 +90,6 @@ Due to limitations in Nvidia's L4T OS, it's necessary to use a docker image to t
 
 ## Teleop_twist_joy
 This package allows control of the vehicle via keyboard or controller commands, changes are necessary to the configuration files for certain controller set ups. These changes need to match the velocity command topics that are subscribed to by the controller/twist_mux.
-
-## Usb_cam
-This package is used for setting up ROS2 nodes to publish raw and compressed image topics for each monocular rgb camera. Custom udev rules were written to maintain consistent /dev entries for each camera
 
 # Custom ROS Packages
 Many features for this lab are required to be implemented from scratch due to the uniqueness of our system. This section will outline the custom nodes developed, and a brief introduction to their functionality.

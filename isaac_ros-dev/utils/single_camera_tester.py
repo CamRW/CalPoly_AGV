@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-cap1 = cv2.VideoCapture("/dev/video14", cv2.CAP_V4L2) # Back
+cap1 = cv2.VideoCapture("/dev/video0", cv2.CAP_V4L2) # Back
 #cap3 = cv2.VideoCapture("/dev/video3", cv2.CAP_V4L2) # Right
 
 # FRAME_WIDTH = 640

@@ -29,6 +29,6 @@ if __name__ == "__main__":
 
     print(device_dict)
 
-    with open('configs/camera_configs/cameras.json', 'w') as fp:
+    with open('/home/agxorin1/workspaces/isaac_ros-dev/configs/camera_configs/cameras.json', 'w') as fp:
         j = json.dumps(device_dict)
         fp.write(j)
