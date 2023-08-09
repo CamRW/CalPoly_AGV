@@ -72,23 +72,23 @@ if [[ -z "$(docker ps)" ]] ;  then
 fi
 
 # Check if git-lfs is installed.
-if [[ -z "$(git lfs)" ]] ; then
-    print_error "git-lfs is not insalled. Please make sure git-lfs is installed before you clone the repo."
-    exit 1
-fi
+# if [[ -z "$(git lfs)" ]] ; then
+#     print_error "git-lfs is not insalled. Please make sure git-lfs is installed before you clone the repo."
+#     exit 1
+# fi
 
 # Check if all LFS files are in place
-git rev-parse &>/dev/null
-if [[ $? -eq 0 ]]; then
-    LFS_FILES_STATUS=$(cd $ISAAC_ROS_DEV_DIR && git lfs ls-files | cut -d ' ' -f2)
-    for (( i=0; i<${#LFS_FILES_STATUS}; i++ )); do
-        f="${LFS_FILES_STATUS:$i:1}"
-        if [[ "$f" == "-" ]]; then
-            print_error "LFS files are missing. Please re-clone the repo after installing git-lfs."
-            exit 1
-        fi
-    done
-fi
+# git rev-parse &>/dev/null
+# if [[ $? -eq 0 ]]; then
+#     LFS_FILES_STATUS=$(cd $ISAAC_ROS_DEV_DIR && git lfs ls-files | cut -d ' ' -f2)
+#     for (( i=0; i<${#LFS_FILES_STATUS}; i++ )); do
+#         f="${LFS_FILES_STATUS:$i:1}"
+#         if [[ "$f" == "-" ]]; then
+#             print_error "LFS files are missing. Please re-clone the repo after installing git-lfs."
+#             exit 1
+#         fi
+#     done
+# fi
 
 PLATFORM="$(uname -m)"
 

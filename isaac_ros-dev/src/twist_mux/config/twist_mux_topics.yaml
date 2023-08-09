@@ -15,12 +15,12 @@ twist_mux:
       joystick:
         topic   : /joy/cmd_vel
         timeout : 0.5
-        priority: 80
+        priority: 90
       keyboard:
         topic   : /keyboard/cmd_vel
         timeout : 0.5
-        priority: 90
+        priority: 100
       simulatorchair:
         topic   : /simulator_chair/cmd_vel
         timeout : 0.5
-        priority: 100
+        priority: 80
