@@ -96,9 +96,6 @@ The 3rd party libraries used in this project are listed below, if a specific bra
 	- https://github.com/ros2/teleop_twist_joy
 	- branch: humble
 
-
-# Package Description
-
 ## Velodyne
 This package serves as the driver for accessing the Velodyne VLP16 puck lidar used on this vehicle. It publishes several ROS2 topics used for point cloud processing. The package assumes the default network address for the lidar is used. If there is a desire to change that address, the change must be reflected in this package.
 
@@ -129,11 +126,5 @@ This package is an ongoing effort in creating an accurate URDF model of the vehi
 ## gps_package
 This package communicates with the on-board Sierra Wireless Airlink MP70 (https://www.sierrawireless.com/router-solutions/mp70/) wireless modem to aquire GPS data. The node opens a serial port to the modem and receives telemetry data in the TAIP protocol format. This data is parsed and then published on a NavSatFix topic. Frequency of the messages can be changed within the modem's configuration page.
 
-## lin_det_package
-Currently in development, the final version of this package aims to provide some basic autonomy via line following.
-
 ## realsense_obj_det
 This package uses the on-board realsense camera and the topics published from the realsense-ros nodes to detect objects close to the vehicle. By utilizing the depth sensor on the realsense camera, objects of a certain size within a "close" distance to the camera will change the value of the topic published from this node. The controller node is subscribed to this topic and will stop the drive motors when conditions are met.
-
-## simulator_control
-This is the current implementation of steering and velocity control. This node subscribes to twist messages and uses the x.linear field for linear acceleration and the z.angular field for steering angle. Two microcontrollers are used for the low-level motor control. This node opens up serial ports to these microcontrollers and send the appropriate message based on the twist messages.

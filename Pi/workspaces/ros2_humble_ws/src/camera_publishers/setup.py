@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'encoder_pkg'
+package_name = 'camera_publishers'
 
 setup(
     name=package_name,
@@ -13,15 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='ubuntu',
-    maintainer_email='ubuntu@todo.todo',
+    maintainer='root',
+    maintainer_email='root@todo.todo',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-
-            "encoder_node = encoder_pkg.encoder_publisher:main"
+            'camera_publishers = camera_publishers.camera_publishers:main'
         ],
     },
 )

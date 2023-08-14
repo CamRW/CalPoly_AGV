@@ -6,15 +6,20 @@ from geometry_msgs.msg import Twist
 import serial
 import time
 import sys
+import math
+PI = 3.1415
+wheel_base = 1.6 # Meters
+track_width = .87 # Meters
+wheel_diameter = .33 # Meters
 
 ser = serial.Serial('/dev/ttyACM0', 115200, timeout=0.1)         # 1/timeout is the frequency at which the port is read
 # ser.close()
 # data ="0,0" # ser.readline().decode().strip()
 
-class WheelsNode(Node):
+class MotorNode(Node):
     def __init__(self):
-        super().__init__("wheel_velocity_publisher")
-        self.wheel_velocity_publisher = self.create_publisher(Twist, "wheel_velocity", 1)
+        super().__init__("motor_control_node")
+        self.wheel_velocity_publisher = self.create_publisher(Twist, "odom_encoder", 1)
         self.timer_ = self.create_timer(0.2, self.publish_wheel_velocity)
         self.get_logger().info("publishing velocities")
 
@@ -26,7 +31,7 @@ class WheelsNode(Node):
         linear_velocity = round((msg.linear.x)/1.5,2)
        # print(linear_velocity)
         steering_angle = (msg.angular.z)
-        steering_angle_int = int(steering_angle)*61+512
+        steering_angle_int = int(steering_angle*61.0+512.0)
        # print(steering_angle_int)
         # print('listener called back')
         #message = str("0") + "," + str("512")
@@ -36,7 +41,7 @@ class WheelsNode(Node):
 	#print(message)
         #time.sleep(.2)
         ser.write(bytes(message, 'utf-8'))
-        print(message)
+        #print(message)
 
 
 
@@ -69,11 +74,18 @@ class WheelsNode(Node):
                 
                 # # Fill X and Y linear velocities with wheel encoders
          #       print(encoder_data_list)
-                msg.linear.x = float(encoder_data_list[0])*20/100
-                msg.linear.y = float(encoder_data_list[1])*20/100
+
+                right_wheel = float(encoder_data_list[0])*PI*wheel_diameter/60
+                left_wheel = float(encoder_data_list[1])*PI*wheel_diameter/60
+                msg.linear.x = (right_wheel + left_wheel)/2.0
+                #msg.linear.y = float(encoder_data_list[1])*20/100
 
                 # # Fill Z angular with Steering angle encoder
-                msg.angular.z = -1.0 * float(encoder_data_list[2])
+                steering_angle = -1.0*float(encoder_data_list[2])*(360/1023-180)
+                angular_velocity = (msg.linear.x)/(track_width*math.tan(steering_angle))
+                # print("Encoder Angular Velocity", (right_wheel - left_wheel)*.87)
+                # print("Other angular velocity" ,angular_velocity)
+                msg.angular.z = angular_velocity
                 self.wheel_velocity_publisher.publish(msg)
                 # # ser.reset_input_buffer()
        
@@ -92,7 +104,7 @@ class WheelsNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = WheelsNode()
+    node = MotorNode()
     rclpy.spin(node)
     rclpy.shutdown()
 
