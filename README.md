@@ -7,12 +7,19 @@ This document serves as an introduction to the autonomous vehicles lab's codebas
 ## Overview
 This lab uses the ROS2 software architecture to manage all aspects of the autonomous vehicle. ROS2 Humble is used in this project with the default FastDDS middleware. Since ROS2 is the backbone of this project, the file structure will resemble that of a ROS2 workspace. Individual packages will contain their own readme when applicable.
 
-The code developed in this repository is set up to run on an Nvidia AGX Orin single board computer with various embedded systems for low-level control. The initial set up instructions for the AGX Orin will need to be followed when using a brand new AGX Orin (see https://developer.nvidia.com/embedded/learn/get-started-jetson-agx-orin-devkit). Device-specific settings such as network interfaces, ROS middleware profiles, serial ports, etc... will need configured based on your set-up. These changes will be outlined for each module.
+There are currently three computing devices on the vehicle. The main computing device is an Nvidia AGX Orin, which handles high level robotics tasks and several sensor data collection modules. A raspberry pi board is used for communication with a microcontroller (Arduino Mega)
+for sending control commands and recieving odometry data. Additionally, the raspberry pi interfaces with two usb cameras that are used for data collection and video streaming for remote control. The microcontroller currently used is an Arduino Mega which recieves control commands, collects encoder data, and transmits odometry information to the rest of the system.
+
+The structure of this repository is set up so that each directory in the root of the repository corresponds to the code running on a specific device. A more detailed project structure is discussed below.
+
+## Project Structure
+
+### isaac_ros-dev
+The code developed in this directory is set up to run on an Nvidia AGX Orin single board computer with various embedded systems for low-level control. The initial set up instructions for the AGX Orin will need to be followed when using a brand new AGX Orin (see https://developer.nvidia.com/embedded/learn/get-started-jetson-agx-orin-devkit). Device-specific settings such as network interfaces, ROS middleware profiles, serial ports, etc... will need configured based on your set-up. These changes will be outlined for each module.
 
 This project utilizes a base docker image created through Nvidia's Isaac ROS packages. Setting up this image properly is critical to having a functional system. Follow Nvidia's documentation at https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common and https://github.com/NVIDIA-ISAAC-ROS
 
-## Project Structure
-The bulk of the project is laid out in standard ROS2 folder structures, the workspace directory isaac_ros-dev stores the source code for the ROS nodes in its src directory. A root level launch folder is used for storing a vehicle bringup launch file. A configs folder is used for storing camera configs that may be used across different nodes. Also within the root of the workspace, a utils folder is used for utility scripts such as updating camera device numbers for multiple identical cameras. A high level overview of the project structure is listed below.
+The bulk of this directory is laid out in standard ROS2 folder structures, the workspace directory isaac_ros-dev stores the source code for the ROS nodes in its src directory. A root level launch folder is used for storing a vehicle bringup launch file. A configs folder is used for storing camera configs that may be used across different nodes. Also within the root of the workspace, a utils folder is used for utility scripts such as updating camera device numbers for multiple identical cameras. A high level overview of the project structure is listed below.
 
 ```
 isaac_ros-dev
@@ -39,7 +46,26 @@ isaac_ros-dev
 │   └── web_video_server
 └── utils
 ```
+### Pi
+The raspberry pi OS is 20.04 Ubuntu Server, but all modules are developed within a ROS2 Humble docker container. A dockerfile is provided to build the image and a start script is written to start the container. The workspace is mounted as a volume to allow development within the container.
 
+```
+
+workspaces
+.
+├── ros2_humble_ws 
+|	├── launch
+│   	└── bringup.py
+|	├── src
+│   	├── encoder_pkg
+│   	└── camera_publishers
+├── Dockerfile
+└── start.sh
+```
+
+
+### Microcontrollers
+One microcontroller is currently being used to handle control commands and transmit odometry information. The code was written for an Arduino Mega but should be easily adaptable to most boards. No directory structure is provided as it is a single .ino file.
 # VPN Setup
 This project uses the Husarnet VPN as it is a simple to use VPN specifically designed to work with ROS. Follow the documentation to set up networks and clients on Husarnet's website (see https://husarnet.com/ and https://github.com/husarnet/husarnet). Additionally, a tool provided by Husarnet, called husarnet-dds (see https://github.com/husarnet/husarnet-dds), can be used to automatically create the middleware profile necessary for ROS to communicate outside of the local network.
 
@@ -69,6 +95,9 @@ The 3rd party libraries used in this project are listed below, if a specific bra
 - teleop_twist_joy
 	- https://github.com/ros2/teleop_twist_joy
 	- branch: humble
+
+
+# Package Description
 
 ## Velodyne
 This package serves as the driver for accessing the Velodyne VLP16 puck lidar used on this vehicle. It publishes several ROS2 topics used for point cloud processing. The package assumes the default network address for the lidar is used. If there is a desire to change that address, the change must be reflected in this package.

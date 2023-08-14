@@ -30,11 +30,11 @@ def generate_launch_description():
     #     executable='simulator_control_node'
     # )
 
-    realsense_obj_det_node = Node(
-        package='realsense_obj_det',
-        namespace='realsense_obj_det',
-        executable='realsense_obj_det_node'
-    )    
+    # realsense_obj_det_node = Node(
+    #     package='realsense_obj_det',
+    #     namespace='realsense_obj_det',
+    #     executable='realsense_obj_det_node'
+    # )    
 
     web_video_server_node = Node(
         package='web_video_server',
@@ -107,7 +107,7 @@ def generate_launch_description():
         # right_fisheye_node,
         gps_node,
         # simulator_control_node,
-        realsense_obj_det_node,
+        # realsense_obj_det_node,
         web_video_server_node,
         image_stitcher_node
         # left_boxcam_node,

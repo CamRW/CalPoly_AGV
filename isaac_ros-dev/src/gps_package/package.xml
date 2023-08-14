@@ -3,8 +3,8 @@
 <package format="3">
   <name>gps_package</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="cameronrweigel@gmail.com">mousemoose</maintainer>
+  <description>Parse Serial GPS messages from on-board modem/gps module</description>
+  <maintainer email="crweigel@cpp.edu">Cameron Weigel</maintainer>
   <license>TODO: License declaration</license>
 
   <exec_depend>rclpy</exec_depend>

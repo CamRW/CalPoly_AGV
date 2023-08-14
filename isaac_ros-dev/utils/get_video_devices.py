@@ -5,12 +5,15 @@ import json
 # This code is used to assign the correct video devices for identical cameras, it requires that the cameras are plugged into the same port every time
 # If ports change, the sys path, listed as the value in the devices dict must be updated appropriately
 
+
 if __name__ == "__main__":
     context = pyudev.Context()
-    devices = {'/dev/front_fisheye': '/sys/devices/platform/3610000.xhci/usb1/1-2/1-2.1/1-2.1:1.0',
+    # '/dev/front_fisheye': '/sys/devices/platform/3610000.xhci/usb1/1-2/1-2.1/1-2.1:1.0',
+    # '/dev/back_boxcam': '/sys/devices/platform/3610000.xhci/usb1/1-4/1-4.3/1-4.3:1.0'
+    devices = {
             '/dev/left_fisheye': '/sys/devices/platform/3610000.xhci/usb1/1-4/1-4.2/1-4.2:1.0',
-            '/dev/right_fisheye': '/sys/devices/platform/3610000.xhci/usb1/1-2/1-2.2/1-2.2.4/1-2.2.4:1.0',
-            '/dev/back_boxcam': '/sys/devices/platform/3610000.xhci/usb1/1-4/1-4.3/1-4.3:1.0'}
+            '/dev/right_fisheye': '/sys/devices/platform/3610000.xhci/usb1/1-2/1-2.2/1-2.2.4/1-2.2.4:1.0'
+            }
 
     device_dict = {}
 
