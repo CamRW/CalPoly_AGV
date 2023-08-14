@@ -35,10 +35,8 @@ isaac_ros-dev
 │   ├── image_stitcher
 │   ├── isaac_ros_common
 │   ├── isaac_ros_nvblox
-│   ├── lin_det_pkg
 │   ├── realsense_obj_det
 │   ├── realsense-ros
-│   ├── simulator_control
 │   ├── teleop_twist_joy
 │   ├── teleop_twist_keyboard
 │   ├── twist_mux
@@ -126,5 +124,14 @@ This package is an ongoing effort in creating an accurate URDF model of the vehi
 ## gps_package
 This package communicates with the on-board Sierra Wireless Airlink MP70 (https://www.sierrawireless.com/router-solutions/mp70/) wireless modem to aquire GPS data. The node opens a serial port to the modem and receives telemetry data in the TAIP protocol format. This data is parsed and then published on a NavSatFix topic. Frequency of the messages can be changed within the modem's configuration page.
 
+## image_stitcher
+This package stitches multiple camera streams together to provide a 360 degree view around the vehicle for remote control. Since multiple identical cameras are used their /dev entries can change on boot and they cannot be symlinked through udev rules due to their identical properties, a helper script get_video_devices.py in isaac_ros-dev/utils will query the /dev entries based on usb bus and port and then write to a json file in isaac_ros-dev/configs/camera_configs/cameras.json which is used for parsing the camera /dev entries. The limitation to this fix is that the cameras must be plugged into their unique usb ports since the only way to differentiate identical devices is on which usb port/bus they are connected to.
+
 ## realsense_obj_det
 This package uses the on-board realsense camera and the topics published from the realsense-ros nodes to detect objects close to the vehicle. By utilizing the depth sensor on the realsense camera, objects of a certain size within a "close" distance to the camera will change the value of the topic published from this node. The controller node is subscribed to this topic and will stop the drive motors when conditions are met.
+
+## camera_publishers
+This package runs on the raspberry pi and publishes two image topics for the optical front and back cameras. It uses OpenCV to access the devices, resize the images, and then publishes them on their appropriate ROS2 topics.
+
+## motor_control_pkg
+This package handles the motor controls and their associated encoders. This package also runs on the raspberry pi and communicates with an Arduino Mega over serial to send control commands and recieve odometry information.
