@@ -17,8 +17,12 @@ RUN python3 -m pip install -U \
 RUN python3 -m pip install -U \
     pyOpenSSL \
     aiohttp \
-    aiortc
+    aiortc \
+    albumentations
 
+RUN python3 -m pip install -U \
+    scikit-image
+    
 RUN apt-get install -y \
     net-tools
 

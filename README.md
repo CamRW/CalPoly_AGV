@@ -130,6 +130,9 @@ This package stitches multiple camera streams together to provide a 360 degree v
 ## realsense_obj_det
 This package uses the on-board realsense camera and the topics published from the realsense-ros nodes to detect objects close to the vehicle. By utilizing the depth sensor on the realsense camera, objects of a certain size within a "close" distance to the camera will change the value of the topic published from this node. The controller node is subscribed to this topic and will stop the drive motors when conditions are met.
 
+## road_segmentation
+Road segmentation uses the UNet architecture (https://arxiv.org/abs/1505.04597) trained on labeled images of roads provided by (https://github.com/aatiibutt/Drivable-Road-Region-Detection-and-Steering-Angle-Estimation-Method) as a baseline. The model is then fine-tuned with labeled images collected around Cal Poly Pomona's campus. This node subscribes to an optical camera topic /video/front_camera by default, and publishes an image masked with the detected road segment.
+
 ## camera_publishers
 This package runs on the raspberry pi and publishes two image topics for the optical front and back cameras. It uses OpenCV to access the devices, resize the images, and then publishes them on their appropriate ROS2 topics.
 
