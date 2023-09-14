@@ -95,7 +95,7 @@
   <xacro:steeringwheels prefix="drivewhl_steering_l" x_reflect="1" y_reflect="1" />
 
   <!-- Lidar -->
-  <link name="lidar">
+  <link name="velodyne">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -109,7 +109,7 @@
   </link>
   <joint name="velodyne_joint" type="fixed">
     <parent link="base_link"/>
-    <child link="lidar"/>
+    <child link="velodyne"/>
     <origin xyz ="0 0 1.0414" rpy="0 0 0"/>
   </joint>
 

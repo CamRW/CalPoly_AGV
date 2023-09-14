@@ -188,7 +188,6 @@ docker run -it --rm \
     -v /dev/left_fisheye:/dev/left_fisheye \
     -v /dev/right_fisheye:/dev/right_fisheye \
     -v /etc/localtime:/etc/localtime:ro \
-    -v /dev/input/js4:/dev/input/js4 \
     --name "$CONTAINER_NAME" \
     --runtime nvidia \
     --user="admin" \

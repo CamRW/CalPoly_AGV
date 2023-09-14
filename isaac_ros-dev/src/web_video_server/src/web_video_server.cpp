@@ -68,7 +68,7 @@ WebVideoServer::WebVideoServer(rclcpp::Node::SharedPtr &nh, rclcpp::Node::Shared
   if (private_nh->get_parameter("address", parameter)) {
     address_ = parameter.as_string();
   } else {
-    address_ = "agxorin_agv";
+    address_ = "agx_orin1";
   }
 
   int server_threads;

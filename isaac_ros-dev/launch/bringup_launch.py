@@ -12,17 +12,17 @@ import os
 
 def generate_launch_description():
 
-    teleop_twist_keyboard_node = Node(
-        package='teleop_twist_keyboard',
-        namespace='teleop_twist_keyboard',
-        executable='teleop_twist_keyboard'
-    )
+    # teleop_twist_keyboard_node = Node(
+    #     package='teleop_twist_keyboard',
+    #     namespace='teleop_twist_keyboard',
+    #     executable='teleop_twist_keyboard'
+    # )
 
     gps_node = Node(
-        package='gps_package',
-        namespace='gps',
-        executable='gps_node'
-    )
+            package='gps_package',
+            namespace='gps',
+            executable='gps_node'
+            )
 
     # simulator_control_node = Node(
     #     package='simulator_control',
@@ -40,13 +40,20 @@ def generate_launch_description():
         package='web_video_server',
         namespace='web_video_server',
         executable='web_video_server'
+        
     )
 
-    image_stitcher_node = Node(
-        package='image_stitcher',
-        namespace='stiched_images',
-        executable='image_stitcher_node'
+    road_segmentation_node = Node(
+        package='road_segmentation',
+        namespace='road_segmentation',
+        executable='road_segmentation_node'
     )
+
+    # image_stitcher_node = Node(
+    #     package='image_stitcher',
+    #     namespace='stiched_images',
+    #     executable='image_stitcher_node'
+    # )
 
     # right_fisheye_node = Node(
     #     package='usb_cam', executable='usb_cam_node_exe',
@@ -96,6 +103,7 @@ def generate_launch_description():
                 ])
             ])
         ),
+        # ),
         # IncludeLaunchDescription(
         #     PythonLaunchDescriptionSource([
         #         PathJoinSubstitution([
@@ -109,7 +117,8 @@ def generate_launch_description():
         # simulator_control_node,
         # realsense_obj_det_node,
         web_video_server_node,
-        image_stitcher_node
+        road_segmentation_node
+        # image_stitcher_node
         # left_boxcam_node,
         # right_boxcam_node
         
