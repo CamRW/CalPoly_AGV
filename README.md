@@ -19,7 +19,7 @@ The code developed in this directory is set up to run on an Nvidia AGX Orin sing
 
 This project utilizes a base docker image created through Nvidia's Isaac ROS packages. Setting up this image properly is critical to having a functional system. Follow Nvidia's documentation at https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common and https://github.com/NVIDIA-ISAAC-ROS
 
-The bulk of this directory is laid out in standard ROS2 folder structures, the workspace directory isaac_ros-dev stores the source code for the ROS nodes in its src directory. A root level launch folder is used for storing a vehicle bringup launch file. A configs folder is used for storing camera configs that may be used across different nodes. Also within the root of the workspace, a utils folder is used for utility scripts such as updating camera device numbers for multiple identical cameras. A high level overview of the project structure is listed below.
+The bulk of this directory is laid out in standard ROS2 folder structures, the workspace directory isaac_ros-dev stores the source code for the ROS nodes in its src directory. A root level launch folder is used for storing a vehicle bringup launch file. A configs folder is used for storing camera configs that may be used across different nodes. Also within the root of the workspace, a utils folder is used for utility scripts such as updating camera device numbers for multiple identical cameras and a test script for trying out our road segmentation model using opencv. A high level overview of the project structure is listed below.
 
 ```
 isaac_ros-dev
@@ -131,7 +131,7 @@ This package stitches multiple camera streams together to provide a 360 degree v
 This package uses the on-board realsense camera and the topics published from the realsense-ros nodes to detect objects close to the vehicle. By utilizing the depth sensor on the realsense camera, objects of a certain size within a "close" distance to the camera will change the value of the topic published from this node. The controller node is subscribed to this topic and will stop the drive motors when conditions are met.
 
 ## road_segmentation
-Road segmentation uses the UNet architecture (https://arxiv.org/abs/1505.04597) trained on labeled images of roads provided by (https://github.com/aatiibutt/Drivable-Road-Region-Detection-and-Steering-Angle-Estimation-Method) as a baseline. The model is then fine-tuned with labeled images collected around Cal Poly Pomona's campus. This node subscribes to an optical camera topic /video/front_camera by default, and publishes an image masked with the detected road segment.
+Road segmentation uses the UNet architecture (https://arxiv.org/abs/1505.04597) trained on labeled images of roads provided by (https://github.com/aatiibutt/Drivable-Road-Region-Detection-and-Steering-Angle-Estimation-Method) as a baseline. The model is then fine-tuned with labeled images collected around Cal Poly Pomona's campus. This node subscribes to an optical camera topic /video/front_camera by default, and publishes an image masked with the detected road segment as well as a twist message to maintain a center position on the detected road segment.
 
 ## camera_publishers
 This package runs on the raspberry pi and publishes two image topics for the optical front and back cameras. It uses OpenCV to access the devices, resize the images, and then publishes them on their appropriate ROS2 topics.
